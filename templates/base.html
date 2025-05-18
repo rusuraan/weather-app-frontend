@@ -3,70 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #3498db;
-            --secondary-color: #2980b9;
-            --accent-color: #e74c3c;
-            --light-bg: #f5f7fa;
-            --dark-text: #2c3e50;
-            --light-text: #ecf0f1;
-            --border-radius: 8px;
-            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: var(--light-bg);
-            color: var(--dark-text);
-            line-height: 1.6;
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .container {
-            width: 100%;
-            padding: 20px;
-        }
-        
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        footer {
-            text-align: center;
-            margin-top: 30px;
-            padding: 15px;
-            font-size: 0.9rem;
-            color: #7f8c8d;
-        }
-        
-        /* For specific blocks */
-        {% block styles %}{% endblock %}
-    </style>
-    {% block head %}{% endblock %}
+    <title>Weather App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}" type="image/svg+xml">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>{% block header %}{% endblock %}</h1>
+            <h1>Weather Forecast App</h1>
         </header>
         
         <main>
-            {% block body %}{% endblock %}
+            {% block content %}{% endblock %}
         </main>
         
         <footer>
-            <p>Weather data provided by <a href="https://open-meteo.com/" target="_blank">Open-Meteo</a></p>
+            <p>&copy; 2025 Weather App</p>
         </footer>
     </div>
 </body>

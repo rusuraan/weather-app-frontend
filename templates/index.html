@@ -1,169 +1,31 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
-{% block styles %}
-.weather-card {
-    background-color: white;
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    padding: 25px;
-    margin-bottom: 20px;
-}
-
-.search-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 30px;
-}
-
-@media (min-width: 768px) {
-    .search-form {
-        flex-direction: row;
-        align-items: flex-end;
-    }
-    
-    .form-group {
-        flex: 1;
-    }
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.form-group label {
-    font-weight: 600;
-    color: var(--dark-text);
-}
-
-.form-control {
-    padding: 12px 15px;
-    border: 1px solid #ddd;
-    border-radius: var(--border-radius);
-    font-size: 1rem;
-    width: 100%;
-}
-
-.btn {
-    padding: 12px 20px;
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 600;
-    transition: background-color 0.2s;
-}
-
-.btn:hover {
-    background-color: var(--secondary-color);
-}
-
-.weather-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    box-shadow: var(--box-shadow);
-    border-radius: var(--border-radius);
-    overflow: hidden;
-}
-
-.weather-table th {
-    background-color: var(--primary-color);
-    color: var(--light-text);
-    padding: 15px;
-    text-align: left;
-}
-
-.weather-table td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #ddd;
-}
-
-.weather-table tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.weather-table tr:last-child td {
-    border-bottom: none;
-}
-
-.alert {
-    padding: 15px;
-    background-color: var(--accent-color);
-    color: white;
-    border-radius: var(--border-radius);
-    margin-bottom: 20px;
-}
-
-.location-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.location-info i {
-    color: var(--primary-color);
-}
-
-.weather-icon {
-    margin-right: 8px;
-}
-{% endblock %}
-
-{% block head %}
-<title>Weather Forecast | Simple Weather App</title>
-<meta name="description" content="Get accurate weather forecasts for any location around the world">
-{% endblock %}
-
-{% block header %}Weather Forecast{% endblock %}
-
-{% block body %}
-<div class="weather-card">
-    <form method="POST" action="/" class="search-form">
-        <div class="form-group">
-            <label for="location"><i class="fas fa-map-marker-alt"></i> Enter Location</label>
-            <input type="text" class="form-control" id="location" name="location" placeholder="City, Country" required>
-        </div>
-        <button type="submit" class="btn"><i class="fas fa-search"></i> Get Forecast</button>
+{% block content %}
+<div class="search-container">
+    <form method="POST">
+        <input type="text" name="location" placeholder="Enter a city name..." required>
+        <button type="submit">Get Weather</button>
     </form>
-    
-    {% if weather %}
-        {% if weather == "Invalid location. Please try again." %}
-            <div class="alert">
-                <i class="fas fa-exclamation-circle"></i> {{ weather }}
-            </div>
-        {% else %}
-            {% if location %}
-                <div class="location-info">
-                    <i class="fas fa-location-dot fa-lg"></i>
-                    <h2>Weather for {{ location }}</h2>
-                </div>
-            {% endif %}
-            
-            <table class="weather-table">
-                <thead>
-                    <tr>
-                        <th><i class="fas fa-calendar-day weather-icon"></i>Date & Time (GMT)</th>
-                        <th><i class="fas fa-temperature-high weather-icon"></i>Temperature (°C)</th>
-                        <th><i class="fas fa-tint weather-icon"></i>Humidity (%)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for temp, humidity, time in weather %}
-                        <tr>
-                            <td>{{ time }}</td>
-                            <td>{{ temp }}°C</td>
-                            <td>{{ humidity }}%</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        {% endif %}
-    {% endif %}
 </div>
+
+{% if error %}
+<div class="error-message">
+    <p>{{ error }}</p>
+</div>
+{% endif %}
+
+{% if weather and location %}
+<div class="weather-results">
+    <h2>Weather for {{ location }}</h2>
+    <div class="forecast-container">
+        {% for data in weather %}
+        <div class="forecast-item">
+            <p class="time">{{ data.time }}</p>
+            <p class="temp">{{ data.temperature }}°C</p>
+            <p class="humidity">{{ data.humidity }}% humidity</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
 {% endblock %}
